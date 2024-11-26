@@ -11,17 +11,18 @@ const Person = ({person, toggleDeletion}) => {
 
 const Persons = ({filteredPersons, setFilteredPersons, setErrorMessage}) => {        
     const toggleDeletion =(id) =>{
-        const person = filteredPersons.find(n => n.id === id)
-        if(window.confirm(`Delete ${person.name}?`)){
+        const personToDelete = filteredPersons.find(n => n.id === id)
+        if(window.confirm(`Delete ${personToDelete.name}?`)){
+            
             numberService
                 .deleteNumber(id)
                 .then(response => {
-                    alert(`Number with name ${response.name} deleted`)
-                    setFilteredPersons(filteredPersons.filter(person => person.id !== response.id))
+                    alert(`Number with name ${personToDelete.name} deleted`)
+                    setFilteredPersons(filteredPersons.filter(person => person.id !== personToDelete.id))
                 })
                 .catch(error => {
                     setErrorMessage(
-                        `Information '${person.name}' has already been removed from server`
+                        `Information '${personToDelete.name}' has already been removed from server`
                         )
                         setTimeout(() => {
                         setErrorMessage(null)
