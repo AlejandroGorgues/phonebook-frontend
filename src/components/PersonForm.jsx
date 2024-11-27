@@ -43,7 +43,21 @@ const PersonForm =({persons, setPersons, setFilteredData, setInputMessage}) =>{
                     setTimeout(() => {
                     setInputMessage(null)
                     }, 3000)
-        }     
+        }   
+        numberService
+            .create(changedPerson)
+            .then(returnedPerson  => {
+                setPersons(persons.concat(returnedPerson))
+                setFilteredData(persons.concat(returnedPerson))
+                setNewName('')
+                setNewNumber('')
+            })
+            setInputMessage(
+                `Added '${changedPerson.name}'`
+                )
+                setTimeout(() => {
+                setInputMessage(null)
+                }, 3000)  
     }
 
     return (
