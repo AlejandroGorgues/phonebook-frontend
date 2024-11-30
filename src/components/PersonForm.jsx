@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import numberService from '../services/numbers.js'
 
-const PersonForm =({persons, setPersons, setFilteredData, setInputMessage}) =>{
+const PersonForm =({persons, setPersons, setFilteredData, setInputMessage, setErrorMessage}) =>{
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
 
@@ -26,9 +26,15 @@ const PersonForm =({persons, setPersons, setFilteredData, setInputMessage}) =>{
                         .then(returnedPerson => {
                             alert(`Number with name ${returnedPerson.name} updated`)
                             setFilteredData(persons.map(person => person.id === returnedPerson.id ? returnedPerson : person))
-                        })
+                        }).catch(error => {
+                            setErrorMessage(
+                                error.respose.data.error
+                            )
+                            setTimeout(() => {
+                            setErrorMessage(null)
+                            }, 5000)})
             }
-        }else{
+        }else{            
             numberService
                 .create(changedPerson)
                 .then(returnedPerson  => {
@@ -36,28 +42,22 @@ const PersonForm =({persons, setPersons, setFilteredData, setInputMessage}) =>{
                     setFilteredData(persons.concat(returnedPerson))
                     setNewName('')
                     setNewNumber('')
-                })
-                setInputMessage(
-                    `Added '${changedPerson.name}'`
+                    setInputMessage(
+                        `Added '${changedPerson.name}'`
+                        )
+                        setTimeout(() => {
+                        setInputMessage(null)
+                        }, 3000)
+                }).catch(error => {                 
+                    setErrorMessage(
+                        error.response?.data?.error
                     )
                     setTimeout(() => {
-                    setInputMessage(null)
-                    }, 3000)
-        }   
-        numberService
-            .create(changedPerson)
-            .then(returnedPerson  => {
-                setPersons(persons.concat(returnedPerson))
-                setFilteredData(persons.concat(returnedPerson))
-                setNewName('')
-                setNewNumber('')
-            })
-            setInputMessage(
-                `Added '${changedPerson.name}'`
-                )
-                setTimeout(() => {
-                setInputMessage(null)
-                }, 3000)  
+                    setErrorMessage(null)
+                    }, 5000)
+                })
+                
+        }
     }
 
     return (

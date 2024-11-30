@@ -31,7 +31,8 @@ const App = () => {
             <PersonForm persons={persons} 
                         setPersons={setPersons} 
                         setFilteredData={setFilteredData}
-                        setInputMessage={setInputMessage}/>
+                        setInputMessage={setInputMessage}
+                        setErrorMessage={setErrorMessage}/>
             <h2>Numbers</h2>
             <Persons filteredPersons={filteredData} 
                         setFilteredPersons={setFilteredData}
